@@ -8,7 +8,7 @@ import os
 # Environment variables
 API_ID = int(os.getenv('API_ID', '39717958'))
 API_HASH = os.getenv('API_HASH', 'e8e1f10ee0080cc64f3d8027a1de2088')
-BOT_TOKEN = os.getenv('BOT_TOKEN', '8074459853:AAEUYnKc_9IuKZsD3tuLEu9mj-vTYIrXIwA')
+BOT_TOKEN = os.getenv('BOT_TOKEN', '8531294221:AAGGv1gWg_nTBs5SspbMLfFSE6fZ18Y14Wc')
 KANAL = os.getenv('KANAL', '@xeberdunyasiaz')
 
 # 18 keyfiyyətli mənbə
