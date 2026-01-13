@@ -1,0 +1,3 @@
+telethon
+feedparser
+deep-translator
