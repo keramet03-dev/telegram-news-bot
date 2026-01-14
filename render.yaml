@@ -2,5 +2,20 @@ services:
   - type: worker
     name: xeber-dunyasi-bot
     env: python
+    region: frankfurt  # Avropa regionu - daha yaxşı latensiya
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python news_bot.py
+    envVars:
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: KANAL
+        sync: false
+      - key: SESSION_STRING
+        sync: false
+      - key: PYTHONUNBUFFERED
+        value: "1"
