@@ -71,7 +71,12 @@ print_step "Addım 1/7: Sistem yenilənir və paketlər quraşdırılır..."
 apt-get update -qq
 apt-get install -y -qq python3 python3-pip python3-venv git curl > /dev/null 2>&1
 
+# Git konfiqurasiyası
+git config --global user.name "keramet03-dev"
+git config --global user.email "keramet03@gmail.com"
+
 print_success "Sistem paketləri quraşdırıldı"
+print_success "Git konfiqurasiya edildi: keramet03-dev <keramet03@gmail.com>"
 
 # ═══════════════════════════════════════════════════════════════
 # ADDIM 2: BOT DİREKTORİYASI
