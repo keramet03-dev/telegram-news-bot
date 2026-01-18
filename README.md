@@ -26,7 +26,7 @@ Azərbaycan və dünya xəbərlərini avtomatik toplayan və Telegram kanalına 
 
 ### 🔄 Avtomatik Xəbər Toplayıcı
 - **18 premium mənbədən** xəbər toplayır
-- Hər **3 saatda** yeni xəbərləri yoxlayır
+- Hər **0.1 saatda** yeni xəbərləri yoxlayır
 - RSS/Atom feed-ləri parsing edir
 
 ### 🌐 Çoxdilli Dəstək
@@ -188,7 +188,7 @@ python news_bot.py
 📢 Kanal: @xeberdunyasiaz
 🌍 Mənbə: 18 keyfiyyətli
 ⏰ Smart paylaşım aktiv
-🔄 Hər 3 saatda yenilənir
+🔄 Hər 0.1 saatda yenilənir
 
 🔄 [14:30] Xəbərlər toplanır...
 ✅ [1/18] APA
@@ -197,7 +197,7 @@ python news_bot.py
 ⏸ 2.5 dəqiqə ara...
 ...
 ✅ Cəmi 18 xəbər paylaşıldı!
-⏰ 3 saat gözləyir...
+⏰ 0.05 saat gözləyir...
 ```
 
 ---
@@ -368,7 +368,7 @@ telegram-news-bot/
 | `main()` | Bot-un əsas döngüsü |
 
 ### Vaxt Cədvəli
-- **Paylaşım intervalı**: Hər 3 saatda bir
+- **Paylaşım intervalı**: Hər 0.05 saatda bir
 - **Xəbərlər arası**: 10 saniyə
 - **3 xəbərdən sonra fasilə**: 2.5 dəqiqə
 
