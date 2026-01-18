@@ -252,7 +252,7 @@ async def main():
             logger.info("⏰ 3 saat gözləyir...")
             
             # 3 saat gözləmə (shutdown yoxlaması ilə)
-            for _ in range(1080):  # 1080 * 10 saniyə = 3 saat
+            for _ in range(36):  # 36 * 10 saniyə = 3 saat
                 if shutdown_event.is_set():
                     break
                 await asyncio.sleep(10)
