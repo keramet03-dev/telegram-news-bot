@@ -8,11 +8,11 @@ from telethon import TelegramClient
 from telethon.sessions import MemorySession
 from deep_translator import GoogleTranslator
 
-# ================== ENV ==================
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-KANAL = os.getenv("KANAL", "@xeberdunyasiaz")
+# ================== API MƏLUMATLARI ==================
+API_ID = 39717958
+API_HASH = "e8e1f10ee0080cc64f3d8027a1de2088"
+BOT_TOKEN = "8497218935:AAE8SK9YMh1mkbaEcwPwNsLzVHhZkojYWJA"
+KANAL = "@xeberdunyasiaz"
 
 # ================== DB ==================
 DB_FILE = "news.db"
@@ -37,10 +37,11 @@ def mark_posted(link, type_):
         try:
             db.execute("INSERT INTO posted VALUES (?,?,?)",
                        (link, type_, datetime.now()))
+            db.commit()
         except:
             pass
 
-# ================== SOURCES ==================
+# ================== XƏBƏR MƏNBƏLƏRİ ==================
 NEWS = {
     "APA": "https://apa.az/rss/az/news",
     "Report": "https://report.az/rss/",
@@ -63,7 +64,7 @@ FUN = {
     "r/wholesomememes": "https://www.reddit.com/r/wholesomememes/.rss",
 }
 
-# ================== UTILS ==================
+# ================== YARDIMCI FUNKSIYALAR ==================
 def clean(text):
     return re.sub(r"<[^>]+>", "", text or "").strip()
 
@@ -90,7 +91,7 @@ def extract_media(entry):
         return entry.media_thumbnail[0].get("url")
     return None
 
-# ================== NEWS ==================
+# ================== XƏBƏR TOPLAMA ==================
 def get_news(source, url):
     try:
         feed = feedparser.parse(url)
@@ -116,7 +117,7 @@ def get_news(source, url):
         print(f"❌ {source}: {e}")
     return None
 
-# ================== FUN ==================
+# ================== ƏYLƏNCƏ TOPLAMA ==================
 def extract_reddit_media(html):
     for pattern in [
         r"https://i\.redd\.it/[^\s\"<>]+\.(jpg|png|gif)",
@@ -150,7 +151,7 @@ def get_fun(source, url):
         print(f"❌ {source}: {e}")
     return None
 
-# ================== POST ==================
+# ================== KANALA GÖNDƏRMƏ ==================
 async def post_news(client):
     posted = 0
     for source, url in NEWS.items():
@@ -195,15 +196,15 @@ async def post_fun(client):
             print(f"❌ {source}: {e}")
             continue
 
-# ================== MAIN ==================
+# ================== ƏSAS PROQRAM ==================
 async def main():
     print("\n" + "="*60)
-    print("🤖 XƏBƏR DÜNYASI BOT - V5 PRO + MemorySession")
+    print("🤖 XƏBƏR DÜNYASI BOT - V5 PRO")
     print("="*60)
     print(f"📢 Kanal: {KANAL}")
     print(f"📰 Xəbər mənbə: {len(NEWS)}")
     print(f"😂 Əyləncə mənbə: {len(FUN)}")
-    print("🔄 Format: 8 xəbər → 1 əyləncə → 6 dəq")
+    print("🔄 Format: 8 xəbər + 1 əyləncə → 6 dəqiqə")
     print("🔒 Təkrar yoxlama: aktiv")
     print("="*60 + "\n")
     
@@ -231,7 +232,7 @@ async def main():
             await asyncio.sleep(360)
     
     except KeyboardInterrupt:
-        print("\n⚠️  Bot dayandırılır...")
+        print("\n⚠️ Bot dayandırılır...")
     
     finally:
         await client.disconnect()
