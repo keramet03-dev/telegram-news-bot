@@ -3,16 +3,19 @@
 
 import os, asyncio, re, sqlite3, random
 from datetime import datetime
+from dotenv import load_dotenv
 import feedparser
 from telethon import TelegramClient
 from telethon.sessions import MemorySession
 from deep_translator import GoogleTranslator
 
-# ================== API MƏLUMATLARI ==================
-API_ID = 39717958
-API_HASH = "e8e1f10ee0080cc64f3d8027a1de2088"
-BOT_TOKEN = "8497218935:AAE8SK9YMh1mkbaEcwPwNsLzVHhZkojYWJA"
-KANAL = "@xeberdunyasiaz"
+# ================== .ENV YÜKLƏ ==================
+load_dotenv()
+
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+KANAL = os.getenv("KANAL")
 
 # ================== DB ==================
 DB_FILE = "news.db"
@@ -85,7 +88,7 @@ def make_title(title, source):
 def extract_media(entry):
     if "media_content" in entry:
         url = entry.media_content[0].get("url")
-        if url and not url.startswith("https://v.redd.it"):
+        if url:
             return url
     if "media_thumbnail" in entry:
         return entry.media_thumbnail[0].get("url")
@@ -105,6 +108,7 @@ def get_news(source, url):
 
             if source not in AZ_SOURCES:
                 title = translate(title)
+                content = translate(content) if content else ""
 
             return {
                 "title": make_title(title, source),
@@ -119,30 +123,37 @@ def get_news(source, url):
 
 # ================== ƏYLƏNCƏ TOPLAMA ==================
 def extract_reddit_media(html):
-    for pattern in [
-        r"https://i\.redd\.it/[^\s\"<>]+\.(jpg|png|gif)",
-        r"https://preview\.redd\.it/[^\s\"<>]+\.(jpg|png|gif)",
-        r"https://i\.imgur\.com/[^\s\"<>]+\.(jpg|png|gif)"
-    ]:
+    patterns = [
+        r"(https://i\.redd\.it/[^\s\"<>]+\.(?:jpg|png|gif))",
+        r"(https://preview\.redd\.it/[^\s\"<>]+\.(?:jpg|png|gif))",
+        r"(https://i\.imgur\.com/[^\s\"<>]+\.(?:jpg|png|gif|mp4))",
+        r"(https://external-preview\.redd\.it/[^\s\"<>]+\.(?:jpg|png|gif))"
+    ]
+    
+    for pattern in patterns:
         m = re.search(pattern, html)
         if m:
-            return m.group(0)
+            return m.group(1)
     return None
 
 def get_fun(source, url):
     try:
         feed = feedparser.parse(url)
         random.shuffle(feed.entries)
-        for e in feed.entries[:20]:
+        for e in feed.entries[:30]:
             link = e.get("link")
             if is_posted(link):
                 continue
 
             html = e.get("content", [{}])[0].get("value", "")
             media = extract_reddit_media(html)
+            
             if media:
+                title = clean(e.get("title"))
+                title_az = translate(title)
+                
                 return {
-                    "title": translate(clean(e.get("title"))),
+                    "title": title_az,
                     "media": media,
                     "link": link,
                     "source": source
@@ -199,7 +210,7 @@ async def post_fun(client):
 # ================== ƏSAS PROQRAM ==================
 async def main():
     print("\n" + "="*60)
-    print("🤖 XƏBƏR DÜNYASI BOT - V5 PRO")
+    print("🤖 SIZIN TV BOT - V6 SECURE")
     print("="*60)
     print(f"📢 Kanal: {KANAL}")
     print(f"📰 Xəbər mənbə: {len(NEWS)}")
